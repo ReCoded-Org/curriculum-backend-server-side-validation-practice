@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/ReCoded-Org/curriculum-backend-server-side-validation-practice#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "express-validator": "^6.13.0"
+    "express-validator": "^6.13.0",
+    "nodemon": "^2.0.14"
   }
 }

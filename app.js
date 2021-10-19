@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const {body,validationResult} = require("express-validator")
 
 const memes = [
 	{
@@ -37,7 +38,7 @@ app.get('/memes', (req, res, next) => {
 	res.status(200).send(memes);
 });
 
-app.post('/memes', (req, res, next) => {
+app.post('/memes',body(name).isEmail(), (req, res, next) => {
 	const { name, imgSource, genre, id } = req.body;
 
 	if (!id) {
