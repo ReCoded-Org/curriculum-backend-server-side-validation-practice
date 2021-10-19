@@ -1,0 +1,23 @@
+{
+  "name": "curriculum-backend-server-side-validation-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReCoded-Org/curriculum-backend-server-side-validation-practice.git"
+  },
+  "author": "Re:coded",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ReCoded-Org/curriculum-backend-server-side-validation-practice/issues"
+  },
+  "homepage": "https://github.com/ReCoded-Org/curriculum-backend-server-side-validation-practice#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-validator": "^6.13.0"
+  }
+}
