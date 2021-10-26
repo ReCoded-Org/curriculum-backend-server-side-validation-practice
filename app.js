@@ -1,102 +1,58 @@
-const express = require('express');
-const app = express();
-const port = 3001;
 
-const path = require('path');
-const bodyParser = require('body-parser');
+const express = require("express")
+const bodyParser = require("body-parser")
+const app = express()
+const { check, validationResult } = require("express-validator")
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-const {body,validationResult} = require("express-validator")
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.json())
+app.set("view engine", "ejs")
+app.set("views", "views")
 
-const memes = [
-	{
-		name: 'John doe',
-		imgSource:
-			'https://cdn.vox-cdn.com/thumbor/cV8X8BZ-aGs8pv3D-sCMr5fQZyI=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/19933026/image.png',
-		genre: [ 'comedy', 'dark', 'witty' ],
-		id: '0'
-	},
-	{
-		name: 'Doe John',
-		imgSource:
-			'https://cdn.vox-cdn.com/thumbor/cV8X8BZ-aGs8pv3D-sCMr5fQZyI=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/19933026/image.png',
-		genre: ['dark', 'witty' ],
-		id: '1'
-	},
-	{
-		name: 'Lorem doe',
-		imgSource:
-			'https://cdn.vox-cdn.com/thumbor/cV8X8BZ-aGs8pv3D-sCMr5fQZyI=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/19933026/image.png',
-		genre: [ 'comedy', 'dark', 'witty' ],
-		id: '2'
-	}
+const usedEmails = [
+	"halit@re-coded.com",
+	"shrreya@re-coded.com",
+	"ammar@re-coded.com",
+	"osama@re-coded.com",
+	"muhannad@re-coded.com"
 ];
 
-app.get('/memes', (req, res, next) => {
-	res.status(200).send(memes);
-});
-
-app.post('/memes',body(name).isEmail(), (req, res, next) => {
-	const { name, imgSource, genre, id } = req.body;
-
-	if (!id) {
-		return res.status(400).json('meme not created please provide an id');
-	}
-	const newMeme = { name, imgSource, genre, id };
-	memes.push(newMeme);
-	res.status(201).send(newMeme);
-});
-
-app.delete('/memes/:id', (req,res) => {
-	const memeIndex = memes.findIndex(el => el.id === req.params.id);
-	console.log(req.params.id);
-	if (memeIndex === -1) {
-		res.status(422).json('meme not found');
-	}
-	
-	const filteredMemes = memes.filter(meme => {
-		return meme.id !== req.params.id
-	});
-	
-	res.status(200).send(filteredMemes);
-});
-
-app.get('/memes/filter', (req,res) => {
-	const { genre } = req.query;
-
-	if(!genre) {
-		res.status(400).json("please make sure you send a valid query parameter");
-	}
-
-	const filteredMemes = memes.filter(meme => {
-		return meme.genre.includes(genre);
-	})
-
-	res.status(200).send(filteredMemes);
+app.get("/", (req, res ) => {
+    res.render("index",{errorMessage})
 })
 
-app.get('/memes/:id', (req, res, next) => {
-	const meme = memes.find((el) => el.id === req.params.id);
-	if (!meme) {
-		res.status(422).json('meme not found');
+app.post("/users",
+check('username', 'This username must be atleast 4 characters long').exists().isLength({min:4}),
+check('email', 'Invalid email').isEmail().normalizeEmail(),
+check('email', 'Email already exists').custom((value) => {
+	return !(usedEmails.includes(value));
+}),
+check('password', 'The password must be 5+ chars long and contain a number')
+.not()
+.isIn(['123', 'password', 'god'])
+.withMessage('Do not use a common word as the password')
+.isLength({ min: 5 })
+.matches(/\d/),
+check('password').custom((value,{req}) => {
+	if(value !== req.body.confirmPassword){
+		return false
 	}
-	res.status(200).send(meme);
-});
-
-app.put('/memes/:id', (req, res, next) => {
-	const memeIndex = memes.findIndex((el) => el.id === req.params.id);
-	
-	if (memeIndex === -1) {
-		res.status(422).json('meme not found');
+	return true
+}),
+ (req,res) => {
+	 console.log(req.body)
+	const errors = validationResult(req);
+	if(errors){
+		const alerts = errors.array()
+		console.log(alerts)
+		res.render("index",{
+			alerts
+		})
+	}else{
+		res.json(req.body)
 	}
-	memes[memeIndex] = req.body;
-	res.status(200).send(memes[memeIndex]);
-});
+})
 
+app.listen(3000, () => console.log("Server running on port 3000"))
 
-
-app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
-});
+module.exports = app
