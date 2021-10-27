@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.json())
 app.set("view engine", "ejs")
 app.set("views", "views")
-
+let alerts;
 const usedEmails = [
     "halit@re-coded.com",
     "shrreya@re-coded.com",
@@ -22,27 +22,22 @@ const usedEmails = [
 ];
 
 app.get("/", (req, res) => {
-    res.render("index", {
-        errorMessage
-    })
+    res.render("index",{alerts})
 })
 
 app.post("/users",
     check('username', 'This username must be atleast 4 characters long').exists().isLength({
         min: 4
-    }),
-    check('email', 'Invalid email').isEmail().normalizeEmail(),
+    }).not().matches(/\s/).withMessage('Username should not include spaces').notEmpty().withMessage('Username should not be empty'),
+    check('email', 'Invalid email').isEmail().normalizeEmail().notEmpty().withMessage('Email should not be empty'),
     check('email', 'Email already exists').custom((value) => {
         return !(usedEmails.includes(value));
     }),
-    check('password', 'The password must be 5+ chars long and contain a number')
-    .not()
-    .isIn(['123', 'password', 'god'])
-    .withMessage('Do not use a common word as the password')
+    check('password', 'The password must be 5+ chars long and contain a number, uppercase and lowercase')
     .isLength({
         min: 5
     })
-    .matches(/\d/),
+    .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/),
     check('password').custom((value, {
         req
     }) => {
@@ -53,8 +48,9 @@ app.post("/users",
     }),
     (req, res) => {
         const errors = validationResult(req);
+        console.log(errors.array())
         if (errors) {
-            const alerts = errors.array()
+             alerts = errors.array()
             res.render("index", {
                 alerts
             })
