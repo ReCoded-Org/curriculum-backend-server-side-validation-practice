@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.json())
 app.set("view engine", "ejs")
 app.set("views", "views")
-let alerts;
+
 const usedEmails = [
     "halit@re-coded.com",
     "shrreya@re-coded.com",
@@ -22,14 +22,14 @@ const usedEmails = [
 ];
 
 app.get("/", (req, res) => {
-    res.render("index",{alerts})
+    res.render("index")
 })
 
 app.post("/users",
-    check('username', 'This username must be atleast 4 characters long').exists().isLength({
+    check('username', 'Username must be atleast 4 characters long').exists().isLength({
         min: 4
     }).not().matches(/\s/).withMessage('Username should not include spaces').notEmpty().withMessage('Username should not be empty'),
-    check('email', 'Invalid email').isEmail().normalizeEmail().notEmpty().withMessage('Email should not be empty'),
+    check('email', 'Invalid email').notEmpty().withMessage('Email should not be empty').isEmail().normalizeEmail(),
     check('email', 'Email already exists').custom((value) => {
         return !(usedEmails.includes(value));
     }),
@@ -38,7 +38,7 @@ app.post("/users",
         min: 5
     })
     .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/),
-    check('password').custom((value, {
+    check('password', 'Passwords are not matching').custom((value, {
         req
     }) => {
         if (value !== req.body.confirmPassword) {
@@ -48,14 +48,16 @@ app.post("/users",
     }),
     (req, res) => {
         const errors = validationResult(req);
-        console.log(errors.array())
-        if (errors) {
+        if (!errors.isEmpty()) {
              alerts = errors.array()
             res.render("index", {
                 alerts
             })
         } else {
-            res.json(req.body)
+            usedEmails.push(req.body.email)
+            res.render("index",{
+                success:"Congratulations, your account has been successfully created"
+            })
         }
     })
 

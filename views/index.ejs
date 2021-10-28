@@ -15,7 +15,15 @@
     <body>
         <div class="container mt-5">
             <h2>Register</h2>
-            <% if(alerts){ %>
+            <% if(locals.success){ %>
+                <div class="alert alert-success alert-dissmissible fade show" role="alert">
+                    <%= success %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+            <% }%>
+            <% if(locals.alerts){ %>
                 <% alerts.forEach((alert) => { %>
                     <div class="alert alert-danger alert-dissmissible fade show" role="alert">
                         <%= alert.msg %>
