@@ -4,6 +4,8 @@ Now that you have done some readings on validation, it's time to practice, in th
 2. Practicing different validation types
 3. Practicing writing custom validations
 
+<img src="./assets/validate.gif"/>
+
 ## Setup
 1. Open your terminal and navigate to your dedicated assignments folder.
 2. Then clone this assignment repo on your local machine.
