@@ -1,5 +1,5 @@
-# Server side validation with express validation
-Now that you have done some readings on validation, it's time to practice, in this activity we will specifically utilize the express-validator package to validate a registration form. The objectives of this assignment are:
+# Server-side validation with express-validator
+Now that you have done some readings on validation, it's time to practice. In this activity, we will specifically utilize the [express-validator](https://express-validator.github.io/docs/) package to validate a registration form. The objectives of this assignment are:
 1. Understanding how to use express-validator with express
 2. Practicing different validation types
 3. Practicing writing custom validations
@@ -11,10 +11,10 @@ Now that you have done some readings on validation, it's time to practice, in th
 2. Then clone this assignment repo on your local machine.
 3. Now open the assignment folder on VSCode.
 
-We already started the `app.js` file for you. it includes:
+We already started the `app.js` file for you. It includes:
 1. Initial setup for your Express server.
-2. A GET request to `/` which renders the `index.ejs` file we included in your `views` folder
-3. A variable called `usedEmails` will come to use during your validation.
+2. A GET request to `/` which renders the `index.ejs` file we included in your `views` folder.
+3. A variable called `usedEmails` that will come into use for your validation rules.
 
 **NOTE**: Please don't make any change to the `usedEmails` variable in the code.
 
@@ -22,51 +22,58 @@ Let’s test our app out! Start the app by running `npm start`. Now visit `http:
 
 <img src="./assets/form.png"/>
 
-Now that you have the starter code for this assignment, it's time to do some Googling and validate each user input. We advise you to keep the documentation open while working on this activity[Express-validator](https://express-validator.github.io/docs/).
+Now that you have the starter code for this assignment, it's time to do some Googling and validate each user input in the registration form. We advise you to keep the [express-validator documentation](https://express-validator.github.io/docs/) open while working on this activity.
 
 ### Requirements
-1. Validate all user inputs
-2. Show alerts in case of incorrect inputs
-3. Save emails of successful registers
+1. Create a POST request to the endpoint `/users` to handle user registration requests.
+2. Connect the registration form to send the POST request with form data when submitted.
+3. Validate all user inputs within the POST request.
+4. Show alerts on the registration form in case of invalid inputs.
+3. Save emails of successful registrations.
 
-HINT: Using the `check()` function that `express-validator` provide for us you will need to create the following validations, in case the user does not pass validations you will have to pass a variable to your EJS template and render specific alerts for the user (We already know how to do that form the Meme website activity).
+HINT: You can create all user input validations using the `check()` function provided by `express-validator`. In case the user request does not pass one or more validations, you will have to pass a variable to your EJS template and render specific alerts for the user. (We already know how to do that from the Meme Website activity).
 
 #### Part 1: Validating the username
-The username should passe the following requirements:
+The username should pass the following validation rules:
 1. Must be at least 4 characters long
 2. Should not include spaces
 3. Should not be empty
-If a user fails any of these validations you will have to output specific alerts to inform the user your alerts should be as follow:
-1. 'Username must be atleast 4 characters long'
+
+If a user request fails any of these validations, you will have to output specific alerts to inform the user. Your alert messages should be as follows:
+1. 'Username must be at least 4 characters long'
 2. 'Username should not include spaces'
 3. 'Username should not be empty'
 
-NOTE: make sure to make use of the [Bootstrap alert component](https://getbootstrap.com/docs/4.0/components/alerts/)
+NOTE: Make sure to use the [Bootstrap alert component](https://getbootstrap.com/docs/4.0/components/alerts/) to display validation alerts on the registration form.
 
 #### Part 2: Validating the email
-The email should passe the following requirements:
-1. Should be unique: here you will use custom validation to check the usedEmails array
-2. Should be in email format
+The email should pass the following requirements:
+1. Should be unique (Here you will write a custom validation to check the `usedEmails` array)
+2. Should be in valid email format
 3. Should not be empty
-If a user fails any of these validations you will have to output specific alerts to inform the user your alerts should be as follow:
+
+If a user request fails any of these validations, you will have to output specific alerts to inform the user. Your alert messages should be as follows:
 1. 'Email already exists'
 2. 'Invalid email'
 3. 'Email should not be empty'
 
 #### Part 3: Validating the password
-The password should passe the following requirements:
-1. Must be 5+ characters containing a number, uppercase, and lowercase
-2. Should match the confirmed password input: here you will use custom validation to compare the 2 passwords
-If a user fails any of these validations you will have to output specific alerts to inform the user your alerts should be as follow:
-1. 'The password must be 5+ chars long and contain a number, uppercase and lowercase'
-2. 'Passwords are not matching'
+The password should pass the following requirements:
+1. Must have at least 5 characters
+2. Must contain at least 1 number, 1 uppercase and 1 lowercase
+3. Should match with the confirm password input (Here you will use custom validation to compare the 2 password inputs)
+4. Should not be empty
+
+If a user request fails any of these validations, you will have to output specific alerts to inform the user. Your alert messages should be as follows:
+1. 'Password must be at least 5 characters long'
+2. 'Password must contain a number, uppercase and lowercase'
+3. 'Passwords are not matching'
+4. 'Password should not be empty'
 
 #### Part 4: Sucessful validation!
-Phew, the user has finally passed all our validation now its time for us to add the registered email:
-- Show a success alert to the user saying "Congratulations, your account has been successfully created"
-- Using the request body, push a new Meme to our `memes` array.
-- As a response, redirect the user to our home page `/`.
-- You should be able to see the new meme on the home page.
+Phew, once the user request has finally passed all our validation, it's time for us to save the registered email.
+1. Using the request body, push the new email to our `usedEmails` array
+2. Show a success alert to the user saying "Congratulations, your account has been successfully created"
 
 ### Submission
 Run `npm test` to test your code. If it shows all tests have passed then you're good to go.
@@ -81,9 +88,9 @@ Once you're ready to submit the assignment, follow these steps on your terminal:
 After your changes are pushed, return to this assignment on Canvas for the final step of submission.
 
 ## Conclusion
-Now you know how to validate user input and handle different types of errors.
+Now you have learnt how to validate user inputs and handle different types of errors. Validation helps us ensure that any mistakes made by a user does not affect the functionality of our system. We always inform the user about the issue so that they can correct it. Can you think of other scenarios besides user registration form where validation will be helpful?
 
-There is another famous validation package called [Joi](https://dev.to/itnext/joi-awesome-code-validation-for-node-js-and-express-35pk) make sure to check it out.
+Make sure to check out another famous validation package called [Joi](https://dev.to/itnext/joi-awesome-code-validation-for-node-js-and-express-35pk).
 
 
 ---
