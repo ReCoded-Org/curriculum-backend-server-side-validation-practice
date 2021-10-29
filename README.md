@@ -22,6 +22,8 @@ Let’s test our app out! Start the app by running `npm start`. Now visit `http:
 
 <img src="./assets/form.png"/>
 
+## Practice Time
+
 Now that you have the starter code for this assignment, it's time to do some Googling and validate each user input in the registration form. We advise you to keep the [express-validator documentation](https://express-validator.github.io/docs/) open while working on this activity.
 
 ### Requirements
@@ -29,9 +31,19 @@ Now that you have the starter code for this assignment, it's time to do some Goo
 2. Connect the registration form to send the POST request with form data when submitted.
 3. Validate all user inputs within the POST request.
 4. Show alerts on the registration form in case of invalid inputs.
-3. Save emails of successful registrations.
+3. Save emails of successful registrations as used.
 
-HINT: You can create all user input validations using the `check()` function provided by `express-validator`. In case the user request does not pass one or more validations, you will have to pass a variable to your EJS template and render specific alerts for the user. (We already know how to do that from the Meme Website activity).
+Your POST request body must in the format:
+```js
+{
+    username: "string",
+    email: "string",
+    password: "string",
+    confirmPassword: "string"
+}
+```
+
+**HINT**: You can create all user input validations using a validation chain of the `check()` function provided by `express-validator`. In case the user request does not pass one or more validations, you will have to pass a variable to your EJS template and render specific alerts for the user. (We already know how to pass variables to EJS from the Meme Website activity).
 
 #### Part 1: Validating the username
 The username should pass the following validation rules:
@@ -44,7 +56,7 @@ If a user request fails any of these validations, you will have to output specif
 2. 'Username should not include spaces'
 3. 'Username should not be empty'
 
-NOTE: Make sure to use the [Bootstrap alert component](https://getbootstrap.com/docs/4.0/components/alerts/) to display validation alerts on the registration form.
+**NOTE**: You may use the [Bootstrap alert component](https://getbootstrap.com/docs/4.0/components/alerts/) to display validation alerts on the registration form.
 
 #### Part 2: Validating the email
 The email should pass the following requirements:
@@ -73,7 +85,7 @@ If a user request fails any of these validations, you will have to output specif
 #### Part 4: Sucessful validation!
 Phew, once the user request has finally passed all our validation, it's time for us to save the registered email.
 1. Using the request body, push the new email to our `usedEmails` array
-2. Show a success alert to the user saying "Congratulations, your account has been successfully created"
+2. Show a success alert to the user saying "Congratulations, your account has been successfully created!"
 
 ### Submission
 Run `npm test` to test your code. If it shows all tests have passed then you're good to go.
